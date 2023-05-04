@@ -96,7 +96,7 @@ class BitcoinRPC:
     async def aclose(self) -> None:
         await self.client.aclose()
 
-    async def acall(
+    async def req(
         self,
         method: str,
         params: List[Union[str, int, List[str], None]],
@@ -127,49 +127,49 @@ class BitcoinRPC:
 
     async def getmempoolinfo(self) -> MempoolInfo:
         """https://developer.bitcoin.org/reference/rpc/getmempoolinfo.html"""
-        return await self.acall("getmempoolinfo", [])
+        return await self.req("getmempoolinfo", [])
 
     async def getmininginfo(self) -> MiningInfo:
         """https://developer.bitcoin.org/reference/rpc/getmininginfo.html"""
-        return await self.acall("getmininginfo", [])
+        return await self.req("getmininginfo", [])
 
     async def getnetworkinfo(self) -> NetworkInfo:
         """https://developer.bitcoin.org/reference/rpc/getnetworkinfo.html"""
-        return await self.acall("getnetworkinfo", [])
+        return await self.req("getnetworkinfo", [])
 
     async def getblockchaininfo(self) -> BlockchainInfo:
         """https://developer.bitcoin.org/reference/rpc/getblockchaininfo.html"""
-        return await self.acall("getblockchaininfo", [])
+        return await self.req("getblockchaininfo", [])
 
     async def getconnectioncount(self) -> ConnectionCount:
         """https://developer.bitcoin.org/reference/rpc/getconnectioncount.html"""
-        return await self.acall("getconnectioncount", [])
+        return await self.req("getconnectioncount", [])
 
     async def getchaintips(self) -> ChainTips:
         """https://developer.bitcoin.org/reference/rpc/getchaintips.html"""
-        return await self.acall("getchaintips", [])
+        return await self.req("getchaintips", [])
 
     async def getdifficulty(self) -> Difficulty:
         """https://developer.bitcoin.org/reference/rpc/getdifficulty.html"""
-        return await self.acall("getdifficulty", [])
+        return await self.req("getdifficulty", [])
 
     async def getbestblockhash(self) -> BestBlockHash:
         """https://developer.bitcoin.org/reference/rpc/getbestblockhash.html"""
-        return await self.acall("getbestblockhash", [])
+        return await self.req("getbestblockhash", [])
 
     async def getblockhash(self, height: int) -> BlockHash:
         """https://developer.bitcoin.org/reference/rpc/getblockhash.html"""
-        return await self.acall("getblockhash", [height])
+        return await self.req("getblockhash", [height])
 
     async def getblockcount(self) -> BlockCount:
         """https://developer.bitcoin.org/reference/rpc/getblockcount.html"""
-        return await self.acall("getblockcount", [])
+        return await self.req("getblockcount", [])
 
     async def getblockheader(
         self, block_hash: str, verbose: bool = True
     ) -> BlockHeader:
         """https://developer.bitcoin.org/reference/rpc/getblockheader.html"""
-        return await self.acall("getblockheader", [block_hash, verbose])
+        return await self.req("getblockheader", [block_hash, verbose])
 
     async def getblockstats(
         self,
@@ -183,7 +183,7 @@ class BitcoinRPC:
         Enter `keys` as positional arguments to return only the provided `keys`
             in the response.
         """
-        return await self.acall(
+        return await self.req(
             "getblockstats",
             [hash_or_height, list(keys) or None],
             timeout=httpx.Timeout(timeout),
@@ -201,7 +201,7 @@ class BitcoinRPC:
         :param verbosity: 0 for hex-encoded block data, 1 for block data with
             transactions list, 2 for block data with each transaction.
         """
-        return await self.acall(
+        return await self.req(
             "getblock", [block_hash, verbosity], timeout=httpx.Timeout(timeout)
         )
 
@@ -220,7 +220,7 @@ class BitcoinRPC:
         :param block_hash: see ^txid
         :param timeout: If doing a lot of processing, no timeout may come in handy
         """
-        return await self.acall(
+        return await self.req(
             "getrawtransaction",
             [txid, verbose, block_hash],
             timeout=httpx.Timeout(timeout),
@@ -240,6 +240,6 @@ class BitcoinRPC:
         :param height: If not provided, get estimated hash power for the latest block
         :param timeout: If doing a lot of processing, no timeout may come in handy
         """
-        return await self.acall(
+        return await self.req(
             "getnetworkhashps", [nblocks, height], timeout=httpx.Timeout(timeout)
         )
