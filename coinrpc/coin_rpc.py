@@ -44,12 +44,10 @@ class coinRPC:
         url: str,
         rpc_user: str,
         rpc_password: str,
-        timeout: int = 5,
         **options: Any,
     ) -> None:
         self._url = url
         self._client = self._configure_client(rpc_user, rpc_password, **options)
-        self.timeout = httpx.Timeout(timeout)
 
     async def __aenter__(self) -> "coinRPC":
         return self
@@ -86,7 +84,10 @@ class coinRPC:
             # guard against content-type overwrite
             headers["content-type"] = "application/json"
 
-        return httpx.AsyncClient(auth=auth, headers=headers, **options)
+        if "timeout" in options:
+            return httpx.AsyncClient(auth=auth, headers=headers, timeout=options.pop("timeout"), **options)
+        else:
+            return httpx.AsyncClient(auth=auth, headers=headers, timeout=5, **options)
 
     @property
     def url(self) -> str:
@@ -185,8 +186,7 @@ class coinRPC:
         """
         return await self.req(
             "getblockstats",
-            [hash_or_height, list(keys) or None],
-            timeout=self.timeout,
+            [hash_or_height, list(keys) or None]
         )
 
     async def getblock(self, block_hash: str, verbosity: Literal[0, 1, 2] = 1) -> Block:
@@ -196,7 +196,7 @@ class coinRPC:
         :param verbosity: 0 for hex-encoded block data, 1 for block data with
             transactions list, 2 for block data with each transaction.
         """
-        return await self.req("getblock", [block_hash, verbosity], timeout=self.timeout)
+        return await self.req("getblock", [block_hash, verbosity])
 
     async def getrawtransaction(
         self, txid: str, verbose: bool = True, block_hash: Optional[str] = None
@@ -211,8 +211,7 @@ class coinRPC:
         """
         return await self.req(
             "getrawtransaction",
-            [txid, verbose, block_hash],
-            timeout=self.timeout,
+            [txid, verbose, block_hash]
         )
 
     async def getnetworkhashps(
@@ -227,7 +226,7 @@ class coinRPC:
         :param timeout: If doing a lot of processing, no timeout may come in handy
         """
         return await self.req(
-            "getnetworkhashps", [nblocks, height], timeout=self.timeout
+            "getnetworkhashps", [nblocks, height]
         )
 
     async def sendtoaddress(
@@ -254,7 +253,8 @@ class coinRPC:
             dirty if they have previously been used in a transaction.
         """
         return await self.req(
-            "sendtoaddress", [address, amount, comment, comment_to, subtractfeefromamount, avoid_reuse], timeout=self.timeout
+            "sendtoaddress",
+            [address, amount, comment, comment_to, subtractfeefromamount, avoid_reuse]
         )
 
     async def getnewaddress(
@@ -269,5 +269,5 @@ class coinRPC:
         :param address_type: The address type to use. Options are “legacy”, “p2sh-segwit”, and “bech32”.
         """
         return await self.req(
-            "getnewaddress", [label, address_type], timeout=self.timeout
+            "getnewaddress", [label, address_type]
         )
