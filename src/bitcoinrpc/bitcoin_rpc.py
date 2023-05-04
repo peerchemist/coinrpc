@@ -43,10 +43,12 @@ class coinRPC:
         url: str,
         rpc_user: str,
         rpc_password: str,
+        timeout: int = 5,
         **options: Any,
     ) -> None:
         self._url = url
         self._client = self._configure_client(rpc_user, rpc_password, **options)
+        self.timeout = httpx.Timeout(timeout)
 
     async def __aenter__(self) -> "coinRPC":
         return self
@@ -174,8 +176,7 @@ class coinRPC:
     async def getblockstats(
         self,
         hash_or_height: Union[int, str],
-        *keys: str,
-        timeout: Optional[float] = 5.0,
+        *keys: str
     ) -> BlockStats:
         """
         https://developer.bitcoin.org/reference/rpc/getblockstats.html
@@ -186,14 +187,13 @@ class coinRPC:
         return await self.req(
             "getblockstats",
             [hash_or_height, list(keys) or None],
-            timeout=httpx.Timeout(timeout),
+            timeout=self.timeout,
         )
 
     async def getblock(
         self,
         block_hash: str,
-        verbosity: Literal[0, 1, 2] = 1,
-        timeout: Optional[float] = 5.0,
+        verbosity: Literal[0, 1, 2] = 1
     ) -> Block:
         """
         https://developer.bitcoin.org/reference/rpc/getblock.html
@@ -202,15 +202,14 @@ class coinRPC:
             transactions list, 2 for block data with each transaction.
         """
         return await self.req(
-            "getblock", [block_hash, verbosity], timeout=httpx.Timeout(timeout)
+            "getblock", [block_hash, verbosity], timeout=self.timeout
         )
 
     async def getrawtransaction(
         self,
         txid: str,
         verbose: bool = True,
-        block_hash: Optional[str] = None,
-        timeout: Optional[float] = 5.0,
+        block_hash: Optional[str] = None
     ) -> RawTransaction:
         """
         https://developer.bitcoin.org/reference/rpc/getrawtransactiono.html
@@ -223,14 +222,13 @@ class coinRPC:
         return await self.req(
             "getrawtransaction",
             [txid, verbose, block_hash],
-            timeout=httpx.Timeout(timeout),
+            timeout=self.timeout,
         )
 
     async def getnetworkhashps(
         self,
         nblocks: int = -1,
-        height: Optional[int] = None,
-        timeout: Optional[float] = 5.0,
+        height: Optional[int] = None
     ) -> NetworkHashps:
         """
         https://developer.bitcoin.org/reference/rpc/getnetworkhashps.html
@@ -241,5 +239,5 @@ class coinRPC:
         :param timeout: If doing a lot of processing, no timeout may come in handy
         """
         return await self.req(
-            "getnetworkhashps", [nblocks, height], timeout=httpx.Timeout(timeout)
+            "getnetworkhashps", [nblocks, height], timeout=self.timeout
         )
