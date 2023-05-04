@@ -3,7 +3,7 @@ from types import TracebackType
 from typing import Any, List, Optional, Type, Union
 
 import httpx
-import orjson
+import json
 from typing_extensions import Literal
 
 from ._exceptions import ImproperlyConfigured, RPCError
@@ -108,7 +108,7 @@ class BitcoinRPC:
         """
         req = self.client.post(
             url=self.url,
-            content=orjson.dumps(
+            content=json.dumps(
                 {
                     "jsonrpc": "2.0",
                     "id": _next_rpc_id(),
@@ -118,7 +118,7 @@ class BitcoinRPC:
             ),
             **kwargs,
         )
-        resp = orjson.loads((await req).content)
+        resp = json.loads((await req).content)
 
         if resp["error"] is not None:
             raise RPCError(resp["error"]["code"], resp["error"]["message"])

@@ -1,3 +1,2 @@
-orjson>=3
 httpx<1
 typing_extensions>=3.7.4.3
