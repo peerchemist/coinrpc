@@ -24,6 +24,7 @@ from ._types import (
     NetworkHashps,
     NetworkInfo,
     RawTransaction,
+    SendToAddress
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -48,7 +49,7 @@ class coinRPC:
     ) -> None:
         self._url = url
         self._client = self._configure_client(rpc_user, rpc_password, **options)
-        self.timeout = httpx.Timeout(timeout)
+        #self.timeout = httpx.Timeout(timeout)
 
     async def __aenter__(self) -> "coinRPC":
         return self
@@ -240,4 +241,31 @@ class coinRPC:
         """
         return await self.req(
             "getnetworkhashps", [nblocks, height], timeout=self.timeout
+        )
+
+    async def sendtoaddress(
+        self,
+        address: str,
+        amount: float,
+        comment: Optional[str] = None,
+        comment_to: Optional[str] = None,
+        subtractfeefromamount: Optional[bool] = True,
+        avoid_reuse: Optional[bool] = True,
+    ) -> SendToAddress:
+        """
+        https://developer.bitcoin.org/reference/rpc/sendtoaddress.html
+
+        :param address: The coin address to send to.
+        :param amount: The amount in coin to send. eg 0.1
+        :param: comment: A comment used to store what the transaction is for.
+            This is not part of the transaction, just kept in your wallet.
+        :param: comment_to: A comment to store the name of the person or organization
+            to which you're sending the transaction. This is not part of the transaction, just kept in your wallet.
+        :param: subtractfeefromamount: The fee will be deducted from the amount being sent.
+            The recipient will receive less coins than you enter in the amount field.
+        :param: avoid_reuse: (only available if avoid_reuse wallet flag is set) Avoid spending from dirty addresses; addresses are considered
+            dirty if they have previously been used in a transaction.
+        """
+        return await self.req(
+            "sendtoaddress", [address, amount, comment, comment_to, subtractfeefromamount, avoid_reuse], timeout=self.timeout
         )
