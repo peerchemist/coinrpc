@@ -176,8 +176,8 @@ class MiningInfo(TypedDict):
     warnings: str
 
 
-BitcoinRPCResponse = TypeVar(
-    "BitcoinRPCResponse",
+coinRPCResponse = TypeVar(
+    "coinRPCResponse",
     ConnectionCount,
     Difficulty,
     BestBlockHash,

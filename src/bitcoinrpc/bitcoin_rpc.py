@@ -9,7 +9,7 @@ from typing_extensions import Literal
 from ._exceptions import ImproperlyConfigured, RPCError
 from ._types import (
     BestBlockHash,
-    BitcoinRPCResponse,
+    coinRPCResponse,
     Block,
     BlockchainInfo,
     BlockCount,
@@ -31,7 +31,7 @@ from ._types import (
 _next_rpc_id = itertools.count(1).__next__
 
 
-class BitcoinRPC:
+class coinRPC:
     __slots__ = ("_url", "_client")
     """
     For list of all available commands, visit:
@@ -48,7 +48,7 @@ class BitcoinRPC:
         self._url = url
         self._client = self._configure_client(rpc_user, rpc_password, **options)
 
-    async def __aenter__(self) -> "BitcoinRPC":
+    async def __aenter__(self) -> "coinRPC":
         return self
 
     async def __aexit__(
@@ -101,7 +101,7 @@ class BitcoinRPC:
         method: str,
         params: List[Union[str, int, List[str], None]],
         **kwargs: Any,
-    ) -> BitcoinRPCResponse:
+    ) -> coinRPCResponse:
         """
         Pass keyword arguments to directly modify the constructed request -
             see `httpx.Request`.
