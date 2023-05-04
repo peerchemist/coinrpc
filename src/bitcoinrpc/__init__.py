@@ -4,7 +4,7 @@ from .bitcoin_rpc import BitcoinRPC
 
 __all__ = (
     "__version__",
-    "BitcoinRPC",
+    "coinRPC",
     "ImproperlyConfigured",
     "RPCError",
 )
