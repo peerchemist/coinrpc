@@ -49,7 +49,7 @@ class coinRPC:
     ) -> None:
         self._url = url
         self._client = self._configure_client(rpc_user, rpc_password, **options)
-        # self.timeout = httpx.Timeout(timeout)
+        self.timeout = httpx.Timeout(timeout)
 
     async def __aenter__(self) -> "coinRPC":
         return self
