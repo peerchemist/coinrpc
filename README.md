@@ -1,20 +1,23 @@
-# *coin-python-async-rpc
+# *coinrpc
 Lightweight *coin async JSON-RPC Python client.
 
-Serves as a tiny layer between an application and a Bitcoin daemon, its primary usage
-is querying the current state of Bitcoin blockchain, network stats, transactions...
+It will work with most modern Satoshi clients.
 
-If you want more complete *Bit*coin experience in Python, consult
+Serves as a tiny layer between an application and a *coin daemon, its primary usage
+is querying the current state of blockchain, network stats, transactions and sending the transactions.
+
+If you want more complete *coin experience in Python, consult
 [python-bitcoinlib](https://github.com/petertodd/python-bitcoinlib).
 
 ## Installation
+
 ```bash
-$ pip install bitcoinrpc
+$ pip install coinrpc
 ```
 
 ## Supported methods
 Here is a list of supported methods, divided by their categories. Should you need
-method not implemented, wrap the call in `coinRPC.acall(<your_method>, ...)` coroutine.
+method not implemented, wrap the call in `coinRPC.req(<your_method>, ...)` coroutine.
 
 ### Blockchain
 
@@ -66,7 +69,7 @@ Minimal illustration (assuming Python 3.8+, where you can run `async` code in co
 $ python -m asyncio
 >>> import asyncio
 >>>
->>> from bitcoinrpc import coinRPC
+>>> from coinrpc import coinRPC
 >>> rpc = coinRPC("http://localhost:9904" "rpc_user", "rpc_passwd")
 >>> await rpc.getconnectioncount()
 10
@@ -79,7 +82,7 @@ all the resource clean-up automatically, as the following example shows:
 ```python
 import asyncio
 
-from bitcoinrpc import coinRPC
+from coinrpc import coinRPC
 
 
 async def main():
