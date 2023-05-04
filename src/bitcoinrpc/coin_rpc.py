@@ -24,7 +24,7 @@ from ._types import (
     NetworkHashps,
     NetworkInfo,
     RawTransaction,
-    SendToAddress
+    SendToAddress,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -49,7 +49,7 @@ class coinRPC:
     ) -> None:
         self._url = url
         self._client = self._configure_client(rpc_user, rpc_password, **options)
-        #self.timeout = httpx.Timeout(timeout)
+        # self.timeout = httpx.Timeout(timeout)
 
     async def __aenter__(self) -> "coinRPC":
         return self
@@ -175,9 +175,7 @@ class coinRPC:
         return await self.req("getblockheader", [block_hash, verbose])
 
     async def getblockstats(
-        self,
-        hash_or_height: Union[int, str],
-        *keys: str
+        self, hash_or_height: Union[int, str], *keys: str
     ) -> BlockStats:
         """
         https://developer.bitcoin.org/reference/rpc/getblockstats.html
@@ -191,26 +189,17 @@ class coinRPC:
             timeout=self.timeout,
         )
 
-    async def getblock(
-        self,
-        block_hash: str,
-        verbosity: Literal[0, 1, 2] = 1
-    ) -> Block:
+    async def getblock(self, block_hash: str, verbosity: Literal[0, 1, 2] = 1) -> Block:
         """
         https://developer.bitcoin.org/reference/rpc/getblock.html
 
         :param verbosity: 0 for hex-encoded block data, 1 for block data with
             transactions list, 2 for block data with each transaction.
         """
-        return await self.req(
-            "getblock", [block_hash, verbosity], timeout=self.timeout
-        )
+        return await self.req("getblock", [block_hash, verbosity], timeout=self.timeout)
 
     async def getrawtransaction(
-        self,
-        txid: str,
-        verbose: bool = True,
-        block_hash: Optional[str] = None
+        self, txid: str, verbose: bool = True, block_hash: Optional[str] = None
     ) -> RawTransaction:
         """
         https://developer.bitcoin.org/reference/rpc/getrawtransactiono.html
@@ -227,9 +216,7 @@ class coinRPC:
         )
 
     async def getnetworkhashps(
-        self,
-        nblocks: int = -1,
-        height: Optional[int] = None
+        self, nblocks: int = -1, height: Optional[int] = None
     ) -> NetworkHashps:
         """
         https://developer.bitcoin.org/reference/rpc/getnetworkhashps.html
@@ -268,4 +255,19 @@ class coinRPC:
         """
         return await self.req(
             "sendtoaddress", [address, amount, comment, comment_to, subtractfeefromamount, avoid_reuse], timeout=self.timeout
+        )
+
+    async def getnewaddress(
+        self, label: Optional[str] = None, address_type: Optional[str] = "bech32"
+    ) -> str:
+        """
+        https://developer.bitcoin.org/reference/rpc/getnewaddress.html
+
+        :param label: The label name for the address to be linked to.
+            It can also be set to the empty string “” to represent the default label.
+            The label does not need to exist, it will be created if there is no label by the given name.
+        :param address_type: The address type to use. Options are “legacy”, “p2sh-segwit”, and “bech32”.
+        """
+        return await self.req(
+            "getnewaddress", [lable, address_type], timeout=self.timeout
         )
