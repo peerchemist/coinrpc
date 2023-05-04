@@ -51,6 +51,14 @@ method not implemented, wrap the call in `coinRPC.acall(<your_method>, ...)` cor
 |------------|:----------------:|
 | `getrawtransaction` | ✔ |
 
+
+### Wallet RPCs
+
+|   Method   |   Supported?     |
+|------------|:----------------:|
+| `sendtoaddress` | ✔ |
+
+
 ## Usage
 Minimal illustration (assuming Python 3.8+, where you can run `async` code in console)
 
@@ -59,7 +67,7 @@ $ python -m asyncio
 >>> import asyncio
 >>>
 >>> from bitcoinrpc import coinRPC
->>> rpc = coinRPC("http://localhost:18443" "rpc_user", "rpc_passwd")
+>>> rpc = coinRPC("http://localhost:9904" "rpc_user", "rpc_passwd")
 >>> await rpc.getconnectioncount()
 10
 >>> await rpc.aclose()  # Clean-up resource
