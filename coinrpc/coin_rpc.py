@@ -269,5 +269,5 @@ class coinRPC:
         :param address_type: The address type to use. Options are “legacy”, “p2sh-segwit”, and “bech32”.
         """
         return await self.req(
-            "getnewaddress", [lable, address_type], timeout=self.timeout
+            "getnewaddress", [label, address_type], timeout=self.timeout
         )
