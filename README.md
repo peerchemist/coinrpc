@@ -61,6 +61,7 @@ method not implemented, wrap the call in `coinRPC.req(<your_method>, ...)` corou
 |------------|:----------------:|
 | `sendtoaddress` | ✔ |
 | `getnewaddress` | ✔ |
+| `importpubkey`  | ✔ |
 
 
 ## Usage
