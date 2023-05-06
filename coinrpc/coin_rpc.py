@@ -268,6 +268,16 @@ class coinRPC:
             The label does not need to exist, it will be created if there is no label by the given name.
         :param address_type: The address type to use. Options are “legacy”, “p2sh-segwit”, and “bech32”.
         """
-        return await self.req(
-            "getnewaddress", [label, address_type]
-        )
+        return await self.req("getnewaddress", [label, address_type])
+
+    async def importpubkey(
+        self, pubkey: str, label: Optional[str], rescan: Optional[bool] = True
+    ) -> None:
+        """
+        https://developer.bitcoin.org/reference/rpc/importpubkey.html
+
+        :param pubkey: The hex-encoded public key.
+        :param lable: An optional label.
+        :param rescan: Rescan the wallet for transactions
+        """
+        return await self.req("importpubkey", [label, rescan])
