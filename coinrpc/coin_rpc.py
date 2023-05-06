@@ -25,6 +25,7 @@ from ._types import (
     NetworkInfo,
     RawTransaction,
     SendToAddress,
+    ListRecievedByAddress,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -85,7 +86,9 @@ class coinRPC:
             headers["content-type"] = "application/json"
 
         if "timeout" in options:
-            return httpx.AsyncClient(auth=auth, headers=headers, timeout=options.pop("timeout"), **options)
+            return httpx.AsyncClient(
+                auth=auth, headers=headers, timeout=options.pop("timeout"), **options
+            )
         else:
             return httpx.AsyncClient(auth=auth, headers=headers, timeout=5, **options)
 
@@ -184,10 +187,7 @@ class coinRPC:
         Enter `keys` as positional arguments to return only the provided `keys`
             in the response.
         """
-        return await self.req(
-            "getblockstats",
-            [hash_or_height, list(keys) or None]
-        )
+        return await self.req("getblockstats", [hash_or_height, list(keys) or None])
 
     async def getblock(self, block_hash: str, verbosity: Literal[0, 1, 2] = 1) -> Block:
         """
@@ -209,10 +209,7 @@ class coinRPC:
         :param block_hash: see ^txid
         :param timeout: If doing a lot of processing, no timeout may come in handy
         """
-        return await self.req(
-            "getrawtransaction",
-            [txid, verbose, block_hash]
-        )
+        return await self.req("getrawtransaction", [txid, verbose, block_hash])
 
     async def getnetworkhashps(
         self, nblocks: int = -1, height: Optional[int] = None
@@ -225,9 +222,7 @@ class coinRPC:
         :param height: If not provided, get estimated hash power for the latest block
         :param timeout: If doing a lot of processing, no timeout may come in handy
         """
-        return await self.req(
-            "getnetworkhashps", [nblocks, height]
-        )
+        return await self.req("getnetworkhashps", [nblocks, height])
 
     async def sendtoaddress(
         self,
@@ -254,7 +249,7 @@ class coinRPC:
         """
         return await self.req(
             "sendtoaddress",
-            [address, amount, comment, comment_to, subtractfeefromamount, avoid_reuse]
+            [address, amount, comment, comment_to, subtractfeefromamount, avoid_reuse],
         )
 
     async def getnewaddress(
@@ -281,3 +276,23 @@ class coinRPC:
         :param rescan: Rescan the wallet for transactions
         """
         return await self.req("importpubkey", [label, rescan])
+
+    async def listreceivedbyaddress(
+        self,
+        include_watchonly: Optional[bool],
+        address_filter: Optional[str],
+        include_empty: Optional[bool] = False,
+        minconf: Optional[int] = 1,
+    ) -> List[ListRecievedByAddress]:
+        """
+        https://developer.bitcoin.org/reference/rpc/listreceivedbyaddress.html
+
+        :param minconf: The minimum number of confirmations before payments are included.
+        :param include_empty: Whether to include addresses that haven't received any payments.
+        :param include_watchonly: Whether to include watch-only addresses
+        :param address_filter If present, only return information on this address.
+        """
+        return await self.req(
+            "listreceivedbyaddress",
+            [minconf, include_empty, include_watchonly, address_filter],
+        )

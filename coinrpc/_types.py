@@ -182,7 +182,18 @@ class _SendToAddress(TypedDict):
     txid: str
     fee_reason: str
 
+
 SendToAddress = Union[str, "_SendToAddress"]
+
+
+class ListRecievedByAddress(TypedDict):
+
+    involvesWatchonly: bool
+    address: str
+    amount: int
+    confirmations: int
+    label: str
+    txids: List[str]
 
 
 coinRPCResponse = TypeVar(
@@ -202,5 +213,6 @@ coinRPCResponse = TypeVar(
     BlockStats,
     Block,
     RawTransaction,
-    SendToAddress
+    SendToAddress,
+    ListRecievedByAddress,
 )
