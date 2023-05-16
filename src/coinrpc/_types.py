@@ -196,6 +196,24 @@ class ListRecievedByAddress(TypedDict):
     txids: List[str]
 
 
+class ListUnspent(TypedDict):
+
+    txid: str
+    vout: int
+    address: str
+    label: str
+    scriptPubKey: str
+    amount: int
+    confirmations: int
+    redeemScript: str
+    witnessScript: str
+    spendable: bool
+    solvable: bool
+    reused: bool
+    desc: str
+    safe: bool
+
+
 coinRPCResponse = TypeVar(
     "coinRPCResponse",
     ConnectionCount,
@@ -215,4 +233,5 @@ coinRPCResponse = TypeVar(
     RawTransaction,
     SendToAddress,
     ListRecievedByAddress,
+    ListUnspent,
 )

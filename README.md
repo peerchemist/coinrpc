@@ -63,6 +63,7 @@ method not implemented, wrap the call in `coinRPC.req(<your_method>, ...)` corou
 | `getnewaddress` | ✔ |
 | `importpubkey`  | ✔ |
 | `listreceivedbyaddress`  | ✔ |
+| `listunspent`  | ✔ |
 
 ## Usage
 Minimal illustration (assuming Python 3.8+, where you can run `async` code in console)

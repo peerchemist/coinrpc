@@ -26,6 +26,7 @@ from ._types import (
     RawTransaction,
     SendToAddress,
     ListRecievedByAddress,
+    ListUnspent,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -295,4 +296,26 @@ class coinRPC:
         return await self.req(
             "listreceivedbyaddress",
             [minconf, include_empty, include_watchonly, address_filter],
+        )
+
+    async def listunspent(
+        self,
+        minconf: Optional[int] = 1,
+        maxconf: Optional[int] = 9999999,
+        addresses: Optional[list] = [],
+        include_unsafe: Optional[bool] = True,
+        query_options: Optional[dict] = {},
+    ) -> List[ListUnspent]:
+        """
+        https://developer.bitcoin.org/reference/rpc/listunspent.html?highlight=listunspent
+
+        :param minconf: The minimum number of confirmations before payments are included.
+        :param maxconf: The maximum confirmations to filter
+        :param addresses: The peercoin addresses to filter
+        :param include_unsafe: Include outputs that are not safe to spend
+        :param query_options: JSON with query options, see bitcoin docs for more info.
+        """
+        return await self.req(
+            "listunspent",
+            [minconf, maxconf, addresses, include_unsafe, query_options],
         )
