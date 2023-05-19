@@ -225,7 +225,7 @@ class SignRawTransactionWithWallet(TypedDict):
 
     hex: str
     complete: bool
-    errors: List(dict)
+    errors: list
 
 
 coinRPCResponse = TypeVar(

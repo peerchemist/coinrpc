@@ -324,9 +324,9 @@ class coinRPC:
 
     async def createrawtransaction(
         self,
-        inputs: List(dict),
-        outputs: List(dict),
-        locktime: Optional(int),
+        inputs: list,
+        outputs: list,
+        locktime: Optional[int] = 0,
         # replaceable: Optional(bool) not supported in Peercoin
     ) -> str:
         """
@@ -339,7 +339,10 @@ class coinRPC:
         return await self.req("createrawtransaction", [inputs, outputs, locktime])
 
     async def fundrawtransaction(
-        self, hexstring: str, options: Optional[dict], iswitness: Optional[bool]
+        self,
+        hexstring: str,
+        iswitness: Optional[bool],
+        options: Optional[dict] = {},
     ) -> FundRawTransaction:
         """
         https://developer.bitcoin.org/reference/rpc/fundrawtransaction.html
@@ -360,7 +363,7 @@ class coinRPC:
 
     async def signrawtransactionwithwallet(
         hexstring: str,
-        prevtxs: Optional[dict],
+        prevtxs: Optional[dict] = [],
         sighashtype: Optional[str] = "ALL",
     ) -> SignRawTransactionWithWallet:
         """
