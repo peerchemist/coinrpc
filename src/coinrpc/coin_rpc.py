@@ -348,3 +348,11 @@ class coinRPC:
         :param iswitness: Whether the transaction hex is a serialized witness transaction.
         """
         return await self.req("fundrawtransaction", [hexstring, options, iswitness])
+
+    async def sendrawtransaction(self, hexstring: str) -> str:
+        """
+        https://developer.bitcoin.org/reference/rpc/sendrawtransaction.html
+
+        :param hexstring: The hex string of the raw transaction
+        """
+        return await self.req("sendrawtransaction", [hexstring])
