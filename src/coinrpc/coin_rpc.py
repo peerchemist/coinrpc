@@ -319,3 +319,19 @@ class coinRPC:
             "listunspent",
             [minconf, maxconf, addresses, include_unsafe, query_options],
         )
+
+    async def createrawtransaction(
+        self,
+        inputs: List(dict),
+        outputs: List(dict),
+        locktime: Optional(int),
+        # replaceable: Optional(bool) not supported in Peercoin
+    ) -> str:
+        """
+        https://developer.bitcoin.org/reference/rpc/createrawtransaction.html
+
+        :param inputs: The of inputs
+        :param outputs: The list of outputs
+        :param locktime: Raw locktime. Non-0 value also locktime-activates inputs.
+        """
+        return await self.reqt("createrawtransaction", [inputs, outputs, locktime])

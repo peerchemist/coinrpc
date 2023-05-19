@@ -53,6 +53,7 @@ method not implemented, wrap the call in `coinRPC.req(<your_method>, ...)` corou
 |   Method   |   Supported?     |
 |------------|:----------------:|
 | `getrawtransaction` | ✔ |
+| `createrawtransaction` | ✔ |
 
 
 ### Wallet RPCs
