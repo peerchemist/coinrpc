@@ -221,6 +221,13 @@ class FundRawTransaction(TypedDict):
     changepos: int
 
 
+class SignRawTransactionWithWallet(TypedDict):
+
+    hex: str
+    complete: bool
+    errors: List(dict)
+
+
 coinRPCResponse = TypeVar(
     "coinRPCResponse",
     ConnectionCount,
@@ -242,4 +249,5 @@ coinRPCResponse = TypeVar(
     ListRecievedByAddress,
     ListUnspent,
     FundRawTransaction,
+    SignRawTransactionWithWallet,
 )

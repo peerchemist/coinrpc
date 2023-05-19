@@ -28,6 +28,7 @@ from ._types import (
     ListRecievedByAddress,
     ListUnspent,
     FundRawTransaction,
+    SignRawTransactionWithWallet,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -356,3 +357,20 @@ class coinRPC:
         :param hexstring: The hex string of the raw transaction
         """
         return await self.req("sendrawtransaction", [hexstring])
+
+    async def signrawtransactionwithwallet(
+        hexstring: str,
+        prevtxs: Optional[dict],
+        sighashtype: Optional[str] = "ALL",
+    ) -> SignRawTransactionWithWallet:
+        """
+        https://developer.bitcoin.org/reference/rpc/signrawtransactionwithwallet.html
+
+        :param hexstring: The transaction hex string
+        :param prevtxn: The previous dependent transaction outputs
+        :param sighashtype: The signature hash type.
+        Must be one of “ALL” “NONE” “SINGLE” “ALL|ANYONECANPAY” “NONE|ANYONECANPAY” “SINGLE|ANYONECANPAY”
+        """
+        return await self.req(
+            "signrawtransactionwithwallet", [hexstring, prevtxs, sighashtype]
+        )
