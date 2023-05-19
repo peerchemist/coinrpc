@@ -27,6 +27,7 @@ from ._types import (
     SendToAddress,
     ListRecievedByAddress,
     ListUnspent,
+    FundRawTransaction,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -334,4 +335,16 @@ class coinRPC:
         :param outputs: The list of outputs
         :param locktime: Raw locktime. Non-0 value also locktime-activates inputs.
         """
-        return await self.reqt("createrawtransaction", [inputs, outputs, locktime])
+        return await self.req("createrawtransaction", [inputs, outputs, locktime])
+
+    async def fundrawtransaction(
+        self, hexstring: str, options: Optional[dict], iswitness: Optional[bool]
+    ) -> FundRawTransaction:
+        """
+        https://developer.bitcoin.org/reference/rpc/fundrawtransaction.html
+
+        :param hexstring: The hex string of the raw transaction
+        :param options: Various options, check upstream docs.
+        :param iswitness: Whether the transaction hex is a serialized witness transaction.
+        """
+        return await self.req("fundrawtransaction", [hexstring, options, iswitness])

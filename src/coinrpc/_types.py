@@ -214,6 +214,13 @@ class ListUnspent(TypedDict):
     safe: bool
 
 
+class FundRawTransaction(TypedDict):
+
+    hex: str
+    fee: int
+    changepos: int
+
+
 coinRPCResponse = TypeVar(
     "coinRPCResponse",
     ConnectionCount,
@@ -234,4 +241,5 @@ coinRPCResponse = TypeVar(
     SendToAddress,
     ListRecievedByAddress,
     ListUnspent,
+    FundRawTransaction,
 )
