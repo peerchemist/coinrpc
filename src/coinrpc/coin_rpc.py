@@ -362,6 +362,7 @@ class coinRPC:
         return await self.req("sendrawtransaction", [hexstring])
 
     async def signrawtransactionwithwallet(
+        self,
         hexstring: str,
         prevtxs: Optional[dict] = [],
         sighashtype: Optional[str] = "ALL",
