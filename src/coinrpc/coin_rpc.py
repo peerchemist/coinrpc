@@ -29,6 +29,7 @@ from ._types import (
     ListUnspent,
     FundRawTransaction,
     SignRawTransactionWithWallet,
+    CreateWallet,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -377,4 +378,38 @@ class coinRPC:
         """
         return await self.req(
             "signrawtransactionwithwallet", [hexstring, prevtxs, sighashtype]
+        )
+
+    async def createwallet(
+        self,
+        wallet_name: str,
+        passphrase: str,
+        disable_private_keys: Optional[bool],
+        blank: Optional[bool] = False,
+        avoid_reuse: Optional[bool] = False,
+        descriptors: Optional[bool] = False,
+        load_on_startup: Optional[bool] = True,
+    ) -> CreateWallet:
+        """
+        https://developer.bitcoin.org/reference/rpc/createwallet.html
+
+        :param wallet_name: The name for the new wallet. If this is a path, the wallet will be created at the path location.
+        :param passphrase: Encrypt the wallet with this passphrase.
+        :param disable_private_keys: Disable the possibility of private keys (only watchonlys are possible in this mode).
+        :param blank: Create a blank wallet. A blank wallet has no keys or HD seed. One can be set using sethdseed.
+        :param avoid_reuse: Keep track of coin reuse, and treat dirty and clean coins differently with privacy considerations in mind.
+        :param descriptors: Create a native descriptor wallet. The wallet will use descriptors internally to handle address creation
+        :param load_on_startup: Save wallet name to persistent settings and load on startup. True to add wallet to startup list, false to remove, null to leave unchanged.
+        """
+        return await self.req(
+            "createwallet",
+            [
+                wallet_name,
+                disable_private_keys,
+                blank,
+                passphrase,
+                avoid_reuse,
+                descriptors,
+                load_on_startup,
+            ],
         )

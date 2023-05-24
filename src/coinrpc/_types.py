@@ -228,6 +228,12 @@ class SignRawTransactionWithWallet(TypedDict):
     errors: list
 
 
+class CreateWallet(TypedDict):
+
+    name: str
+    warning: str
+
+
 coinRPCResponse = TypeVar(
     "coinRPCResponse",
     ConnectionCount,
@@ -250,4 +256,5 @@ coinRPCResponse = TypeVar(
     ListUnspent,
     FundRawTransaction,
     SignRawTransactionWithWallet,
+    CreateWallet,
 )
