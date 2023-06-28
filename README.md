@@ -68,6 +68,7 @@ method not implemented, wrap the call in `coinRPC.req(<your_method>, ...)` corou
 | `listunspent`  | ✔ |
 | `signrawtransactionwithwallet`  | ✔ |
 | `createwallet`  | ✔ |
+| `walletpassphrase`  | ✔ |
 
 ## Usage
 Minimal illustration (assuming Python 3.8+, where you can run `async` code in console)

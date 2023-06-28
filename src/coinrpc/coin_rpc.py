@@ -413,3 +413,13 @@ class coinRPC:
                 load_on_startup,
             ],
         )
+
+    async def walletpassphrase(self, passphrase: str, timeout: int) -> None:
+        """
+        https://developer.bitcoin.org/reference/rpc/walletpassphrase.html
+
+        :param passphrase: The wallet passphrase
+        :param timeout: The wallet passphrase
+        """
+
+        return await self.req("walletpassphrase", [timeout])
