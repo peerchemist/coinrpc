@@ -422,4 +422,4 @@ class coinRPC:
         :param timeout: The wallet passphrase
         """
 
-        return await self.req("walletpassphrase", [timeout])
+        return await self.req("walletpassphrase", [passphrase, timeout])
