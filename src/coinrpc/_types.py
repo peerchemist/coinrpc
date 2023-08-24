@@ -1,6 +1,8 @@
 from typing import Any, Dict, List, TypeVar, Union
 
-from typing_extensions import Literal, TypedDict
+from typing_extensions import Literal, NotRequired, TypedDict
+
+JSONType = Union[None, bool, int, float, str, List["JSONType"], Dict[str, "JSONType"]]
 
 # Type aliases for 1-to-1 match of RPC method and its return type
 ConnectionCount = int
@@ -9,6 +11,9 @@ BestBlockHash = str
 BlockHash = str
 BlockCount = int
 NetworkHashps = float
+CombinePSBT = str
+JoinPSBTs = str
+UtxoUpdatePSBT = str
 
 
 class MempoolInfo(TypedDict):
@@ -234,6 +239,36 @@ class CreateWallet(TypedDict):
     warning: str
 
 
+class AnalyzePSBT(TypedDict):
+    inputs: List[Dict[str, Any]]  # TODO: Complete
+    next: str
+
+    fee: NotRequired[float]
+    estimated_vsize: NotRequired[float]
+    estimated_feerate: NotRequired[float]
+    error: NotRequired[str]
+
+
+class DecodePSBT(TypedDict):
+    tx: Dict[str, Any]
+    unknown: Dict[str, Any]
+    inputs: List[Dict[str, Any]]
+    outputs: List[Dict[str, Any]]
+
+    fee: NotRequired[float]
+
+
+class FinalizePSBT(TypedDict):
+    psbt: str
+    hex: str
+    complete: bool
+
+
+class WalletProcessPSBT(TypedDict):
+    psbt: str
+    complete: bool
+
+
 coinRPCResponse = TypeVar(
     "coinRPCResponse",
     ConnectionCount,
@@ -257,4 +292,11 @@ coinRPCResponse = TypeVar(
     FundRawTransaction,
     SignRawTransactionWithWallet,
     CreateWallet,
+    CombinePSBT,
+    JoinPSBTs,
+    UtxoUpdatePSBT,
+    AnalyzePSBT,
+    DecodePSBT,
+    FinalizePSBT,
+    WalletProcessPSBT,
 )

@@ -56,6 +56,13 @@ method not implemented, wrap the call in `coinRPC.req(<your_method>, ...)` corou
 | `createrawtransaction` | ✔ |
 | `fundrawtransaction` | ✔ |
 | `sendrawtransaction` | ✔ |
+| `analyzepsbt` | ✔ |
+| `combinepsbt` | ✔ |
+| `decodepsbt` | ✔ |
+| `finalizepsbt` | ✔ |
+| `getrawtransaction` | ✔ |
+| `joinpsbts` | ✔ |
+| `utxoupdatepsbt` | ✔ |
 
 ### Wallet RPCs
 
