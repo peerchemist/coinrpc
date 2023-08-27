@@ -432,17 +432,18 @@ class coinRPC:
 
         return await self.req("walletpassphrase", [passphrase, timeout])
 
-    async def optimizeutxoset(self, address: str, amount: float, transmit: bool) -> str:
+    async def optimizeutxoset(self, address: str, amount: float, transmit: Optional[bool] = False, source_address: Optional[str] = None) -> str:
         """
         Optimize the UTXO set in order to maximize the PoS yield. This is only valid for continuous minting. The accumulated coinage will be reset!
         Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.
 
         :param address: The peercoin address to recieve all the new UTXOs. If not provided, new UTOXs will be assigned to the address of the input UTXOs.
         :param amount: The PPC amount to set the value of new UTXOs, i.e. make new UTXOs with value of 110.
-        :param transmit: If true, transmit transaction after generating it.
+        :param transmit: If true, transmit transaction after generating it. False by default.
+        :param source_address: The peercoin address to split coins from. If not provided, all available coins will be used.
         """
 
-        return await self.req("optimizeutxoset", [address, amount, transmit])
+        return await self.req("optimizeutxoset", [address, amount, transmit, source_address])
 
     async def analyzepsbt(self, psbt: str) -> AnalyzePSBT:
         """
