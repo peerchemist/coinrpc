@@ -243,7 +243,7 @@ class coinRPC:
         comment: Optional[str] = None,
         comment_to: Optional[str] = None,
         subtractfeefromamount: Optional[bool] = True,
-        avoid_reuse: Optional[bool] = True,
+        avoid_reuse: Optional[bool] = False,
     ) -> SendToAddress:
         """
         https://developer.bitcoin.org/reference/rpc/sendtoaddress.html
