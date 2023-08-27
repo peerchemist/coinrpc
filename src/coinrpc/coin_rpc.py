@@ -36,6 +36,8 @@ from ._types import (
     JSONType,
     UtxoUpdatePSBT,
     WalletProcessPSBT,
+    AnalyzePSBT,
+    DecodePSBT
 )
 
 # Neat trick found in asyncio library for task enumeration
