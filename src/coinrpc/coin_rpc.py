@@ -422,15 +422,16 @@ class coinRPC:
             ],
         )
 
-    async def walletpassphrase(self, passphrase: str, timeout: int) -> None:
+    async def walletpassphrase(self, passphrase: str, timeout: int, mintonly=False) -> None:
         """
         https://developer.bitcoin.org/reference/rpc/walletpassphrase.html
 
         :param passphrase: The wallet passphrase
         :param timeout: The wallet passphrase
+        :param mintonly: Unlock for minting only
         """
 
-        return await self.req("walletpassphrase", [passphrase, timeout])
+        return await self.req("walletpassphrase", [passphrase, timeout, mintonly])
 
     async def optimizeutxoset(self, address: str, amount: float, transmit: Optional[bool] = False, source_address: Optional[str] = None) -> str:
         """
