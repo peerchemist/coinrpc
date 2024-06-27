@@ -12,8 +12,17 @@ If you want more complete *coin experience in Python, consult
 ## Installation
 
 ```bash
-$ pip install coinrpc
+$ pip install git+https://github.com/peercoin/coinrpc.git
 ```
+
+Or, add to pyproject.toml and use with Poetry:
+
+```
+[tool.poetry.dependencies]
+coinrpc = { git = "https://github.com/peercoin/coinrpc.git" }
+```
+
+
 
 ## Supported methods
 Here is a list of supported methods, divided by their categories. Should you need
