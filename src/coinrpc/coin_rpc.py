@@ -1,6 +1,6 @@
 import itertools
 from types import TracebackType
-from typing import Any, Callable, Dict, List, Optional, Tuple, Type, Union
+from typing import Any, Dict, List, Optional, Type, Union
 
 import httpx
 import json
@@ -33,11 +33,10 @@ from ._types import (
     CombinePSBT,
     FinalizePSBT,
     JoinPSBTs,
-    JSONType,
     UtxoUpdatePSBT,
     WalletProcessPSBT,
     AnalyzePSBT,
-    DecodePSBT
+    DecodePSBT,
 )
 
 # Neat trick found in asyncio library for task enumeration
@@ -422,7 +421,9 @@ class coinRPC:
             ],
         )
 
-    async def walletpassphrase(self, passphrase: str, timeout: int, mintonly=False) -> None:
+    async def walletpassphrase(
+        self, passphrase: str, timeout: int, mintonly=False
+    ) -> None:
         """
         https://developer.bitcoin.org/reference/rpc/walletpassphrase.html
 
@@ -433,7 +434,13 @@ class coinRPC:
 
         return await self.req("walletpassphrase", [passphrase, timeout, mintonly])
 
-    async def optimizeutxoset(self, address: str, amount: float, transmit: Optional[bool] = False, source_address: Optional[str] = None) -> str:
+    async def optimizeutxoset(
+        self,
+        address: str,
+        amount: float,
+        transmit: Optional[bool] = False,
+        source_address: Optional[str] = None,
+    ) -> str:
         """
         Optimize the UTXO set in order to maximize the PoS yield. This is only valid for continuous minting. The accumulated coinage will be reset!
         Requires wallet passphrase to be set with walletpassphrase call if wallet is encrypted.
@@ -444,7 +451,9 @@ class coinRPC:
         :param source_address: The peercoin address to split coins from. If not provided, all available coins will be used.
         """
 
-        return await self.req("optimizeutxoset", [address, amount, transmit, source_address])
+        return await self.req(
+            "optimizeutxoset", [address, amount, transmit, source_address]
+        )
 
     async def analyzepsbt(self, psbt: str) -> AnalyzePSBT:
         """
@@ -460,7 +469,7 @@ class coinRPC:
 
         :param psbts: base64 strings, each representing a partially signed bitcoin transaction
         """
-        return await self.acarell("combinepsbt", list(psbts))
+        return await self.req("combinepsbt", list(psbts))
 
     async def decodepsbt(self, psbt: str) -> DecodePSBT:
         """
